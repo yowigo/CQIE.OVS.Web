@@ -1,0 +1,107 @@
+﻿@model IEnumerable<CQIE.OVS.Models.Theme>
+
+@{
+    ViewData["Title"] = "主题信息";
+    Layout = "_AdminLayout";
+}
+<!-- Sweet Alert -->
+
+<h1>主题信息列表</h1>
+<br />
+<br />
+<div class="text-left">
+    <a href="/Admin/Themes/Create" class="btn btn-info">新增</a>
+</div>
+<form method="get">
+    <div class="form-actions no-color">
+        <p>
+            姓名: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="查询" class="btn btn-success" />
+            <a asp-action="Index" class="btn btn-info">返回列表</a>
+        </p>
+    </div>
+</form>
+<br />
+<form method="get">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Categroy)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+                <th>@Html.DisplayNameFor(model => model.EndTime)</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Categroy)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StartTime)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EndTime)</td>
+                    <td>
+                        <a href="/Admin/Themes/Edit/@item.Id" class="btn btn-info">编辑</a>
+                        @*<a href="/Admin/Themes/Delete/@item.Id" class="btn btn-danger" id="DeleteBtn"
+                    onclick="return confirm('是否确认删除？')">删除</a>*@
+                        @*sweetalert2*@
+                        <a href="/Admin/Themes/Delete/@item.Id" class="btn btn-danger" id="delete">删除</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+@*分页*@
+@*@Html.PagedListPager((IPagedList)Model,page=>Url.Action("Index","Category",new{page}))*@
+
+
+<!-- Delete Button -->
+@*<script>
+    $('#test').click(function() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+        swalWithBootstrapButtons.fire({
+            title: '您确定删除吗?',
+            text: "您不能恢复这个了!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then(function() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Delete","Themes")',
+                data: $("form").serializeArray(),
+                datatype: 'json',
+                success: function(result) {
+                    if (result.isConfirmed) {
+                        swalWithBootstrapButtons.fire(
+                            '已删除!',
+                            '您的文件已被删除。',
+                            'success'
+                        )
+                    }
+                    else if (result.dismiss === Swal.DismissReason.cancel) {/* Read more about handling dismissals below */
+                        swalWithBootstrapButtons.fire(
+                            '已取消',
+                            '你想象中的文件是安全的:)',
+                            'error'
+                        )
+                    }
+                    else { }
+                }
+            })
+        })
+</script>*@
+

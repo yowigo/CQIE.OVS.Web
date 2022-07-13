@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<CQIE.OVS.Models.IdentityModel.SysUser> _signInManager
+@model List<CQIE.OVS.Models.Theme>
+
+<nav id="eskimo-main-menu" class="menu-main-menu-container">
+    @*如果用户已登录并且是管理员，则显示后台和注销链接*@
+    @if (_signInManager.IsSignedIn(User) && User.IsInRole("管理员"))
+    {
+        <ul class="eskimo-menu-ul">
+            <li class="nav-item">
+                <form method="post" asp-controller="Account" asp-action="Logout">
+                    <span>欢迎登录：@User.Identity.Name </span>
+                    <button type="submit" class="nav-link btn btn-lg-link" style="width:auto"
+                        asp-controller="Account" asp-action="Logout">
+                        注销
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index">后台管理</a>
+            </li>
+        </ul>
+    }
+    else if (_signInManager.IsSignedIn(User))
+    {
+        <ul class="eskimo-menu-ul">
+            <li class="nav-item">
+                <form method="post" asp-controller="Account" asp-action="Logout">
+                    <span>欢迎登录：@User.Identity.Name </span>
+                    <button type="submit" class="nav-link btn btn-lg-link" style="width:auto"
+                        asp-controller="Account" asp-action="Logout">
+                        注销
+                    </button>
+                </form>
+            </li>
+        </ul>
+    }
+    else
+    {
+        <ul class="eskimo-menu-ul">
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="account" asp-action="register">注册</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="account" asp-action="login">登录</a>
+            </li>
+        </ul>
+    }
+    <ul class="eskimo-menu-ul">
+        <li><a asp-controller="Home" asp-action="Index">首页</a></li>
+        <li>
+            <a asp-controller="Themes" asp-action="Index">主题</a>
+            <ul class="sub-menu">
+                @foreach (var item in Model)
+                {
+                    <li><a href="Themes/Details/@item.Id">@item.Name</a></li>
+                }
+            </ul>
+        </li>
+        <li><a asp-controller="Singers" asp-action="Index">歌手</a></li>
+    </ul>
+</nav>

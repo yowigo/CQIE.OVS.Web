@@ -1,0 +1,20 @@
+﻿@model List<CQIE.OVS.Models.Theme>
+
+@foreach (var item in Model)
+{
+        <a class="eskimo-slider-img" href="Themes/Details/@item.Id"></a>
+        <ul class="eskimo-slider-image-meta eskimo-image-meta-post">
+            <li>
+                <span class="badge badge-default">活动时间：@item.StartTime——@item.EndTime</span>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+        <img src="/images/image1-1024x682" />@*~/images/background.jpg.jpg  .Substring(0,10)...*@
+        <div class="eskimo-slider-desc">
+            <div class="eskimo-slider-desc-inner">
+                <h2 class="card-title">@item.Name</h2>
+                <p>@item.Description</p>
+            </div>
+        </div>
+}
+   

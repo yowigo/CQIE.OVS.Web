@@ -1,0 +1,163 @@
+﻿@inject CQIE.OVS.Services.IService.IThemeService _themeService
+@{
+    var theme = await _themeService.GetListAsync();
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - CQIE.OVS.Web</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/fontawesome.css" />
+    <link rel="stylesheet" href="~/css/slick.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body>
+    <!-- 阅读位置指示器 -->
+    <progress value="0" id="eskimo-progress-bar">
+        <span class="eskimo-progress-container">
+            <span class="eskimo-progress-bar"></span>
+        </span>
+    </progress>
+    <!-- 阅读位置指示器 -->
+    <div id="eskimo-site-wrapper">
+        <!-- 主体 -->
+        <main id="eskimo-main-container">
+            <div class="container">
+                <!-- 侧边栏 -->
+                <div id="eskimo-sidebar">
+                    <div id="eskimo-sidebar-wrapper" class="d-flex align-items-start flex-column h-100 w-100">
+                        <!-- LOGO -->
+                        <div id="eskimo-logo-cell" class="w-100">
+                            <a class="eskimo-logo-link" asp-controller="Home" asp-action="Index">
+                                <img src="~/images/logo.png" class="eskimo-logo" alt="eskimo" />
+                            </a>
+                        </div>
+                        <!-- 菜单按钮 -->
+                        <div id="eskimo-sidebar-cell" class="w-100">
+                            <!-- 手机菜单按钮 -->
+                            <div id="eskimo-menu-toggle">菜单</div>
+                            <!-- 菜单 -->
+                            @*@await Html.PartialAsync("_NavPartial")*@
+                            @await Component.InvokeAsync("ThemeList")
+                        </div>
+                    </div>
+                </div>
+                <!-- 顶部图标 -->
+                <ul class="eskimo-top-icons">
+                    <li id="eskimo-panel-icon">
+                        <a href="#eskimo-panel" class="eskimo-panel-open"><i class="fa fa-bars"></i></a>
+                    </li>
+                    <li id="eskimo-search-icon">
+                        <a id="eskimo-open-search" href="#"><i class="fa fa-search"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+                <!-- 轮播 -->
+                <div class="eskimo-carousel-container eskimo-bg-loader">
+                    <div id="eskimo-post-slider" class="eskimo-slider">
+                        @*@await Component.InvokeAsync("ThemeSliderList")*@
+                        @foreach (var item in theme)
+                        {
+                            <div>
+                                <a class="eskimo-slider-img" asp-controller="Themes" asp-action="Details" 
+                                    asp-route-id="@item.Id"></a>
+                                <ul class="eskimo-slider-image-meta eskimo-image-meta-post">
+                                    <li>
+                                        <a asp-controller="Themes" asp-action="Details" asp-route-data="@item.Id">
+                                            <span class="badge badge-default">活动时间：@item.StartTime——@item.EndTime</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                                <img src="/images/image2-1200x600.jpg" />
+                                <div class="eskimo-slider-desc">
+                                    <div class="eskimo-slider-desc-inner">
+                                        <h2 class="card-title">@item.Name</h2>
+                                        <p>@item.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- Index -->
+                @RenderBody()
+                
+                <!-- 分割线 -->
+                <hr class="section-divider" />
+            </div>
+        </main>
+        <!-- FOOTER -->
+        <footer id="eskimo-footer">
+            <div class="container">
+                <div class="row eskimo-footer-wrapper">
+                    <!-- FOOTER WIDGET 1 -->
+                    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                        <h5 class="eskimo-title-with-border"><span>网上投票系统</span></h5>
+                        <p>在线投票系统的制作是许多IT人才目前必须掌握的一门技能，这是因为随着网上投票的兴起，人们对在线投票系统的需求大大增加了。</p>
+                    </div>
+                    
+                </div>
+                <!-- CREDITS -->
+                <div class="eskimo-footer-credits">
+                    <p>
+                        Made with love by <a href="http://www.bootstrapmb.com" target="_blank">Egemenerd</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- 回到顶部 -->
+    <a id="eskimo-gototop" href="#"><i class="fa fa-chevron-up"></i></a>
+    <!-- 全屏搜索 -->
+    <div id="eskimo-fullscreen-search">
+        <div id="eskimo-fullscreen-search-content">
+            <a href="#" id="eskimo-close-search"><i class="fa fa-times"></i></a>
+            <form role="search" method="get" action="search.html" class="eskimo-lg-form">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" placeholder="Enter a keyword..." name="s" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- JS文件 -->
+    <script src="~/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="~/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/js/salvattore.min.js" type="text/javascript"></script>
+    <script src="~/js/slick.min.js" type="text/javascript"></script>
+    <script src="~/js/panel.js" type="text/javascript"></script>
+    <script src="~/js/reading-position-indicator.js" type="text/javascript"></script>
+    <script src="~/js/custom.js" type="text/javascript"></script>
+    <!-- 轮播 -->
+    <script>
+        (function($) {
+            "use strict";
+            $(document).ready(function() {
+                $('#eskimo-post-slider').slick({
+                    autoplay: true,
+                    autoplaySpeed: 5000,
+                    slidesToScroll: 1,
+                    adaptiveHeight: true,
+                    slidesToShow: 1,
+                    arrows: true,
+                    dots: false,
+                    fade: true
+                });
+            });
+            $(window).on('load', function() {
+                $('#eskimo-post-slider').css('opacity', '1');
+                $('#eskimo-post-slider').parent().removeClass('eskimo-bg-loader');
+            });
+        })(jQuery);
+    </script>
+</body>
+</html>

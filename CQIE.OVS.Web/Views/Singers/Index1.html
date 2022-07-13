@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<html>
+<head>
+	<style>
+		a{
+			text-decoration:none ;
+			color: #999999;
+		}
+		.red{
+			color: red;
+		}
+	</style>
+	
+</head>
+<body>
+	<p>王思葱竟然也是舔狗？<button><span class="liker">❤999</span></button></p>
+	<p>震惊，一名科学家发现每刷一分钟抖音，人的生命就会减少60秒！<button href="#"><span class="liker">❤520</span></button></p>
+</body>
+<script>
+    $(function(){
+	    //点赞
+	    $(".liker").on("click",function(){
+		    // 判断是否已经点赞过
+		    if($(this).hasClass("red")){
+			    return
+		    }
+		    //添加样式 并且数字+1
+		    $(this).addClass("red")
+		    var num=$(this).html().substring(1)
+		    num++
+		    $(this).html("❤"+num)
+		    //ajax更新数据
+	    })
+    })
+</script>
+
+</html>

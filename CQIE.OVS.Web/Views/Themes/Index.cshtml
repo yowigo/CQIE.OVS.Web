@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CQIE.OVS.Models.Theme>
+
+<h1>主题列表</h1>
+@foreach (var item in Model)
+{
+    <div class="card card-horizontal">
+        <div class="card-body">
+            <div class="card-horizontal-left">
+                <div class="card-category">
+                    @item.Categroy
+                </div>
+                <h3 class="card-title">
+                    <a asp-controller="Themes" asp-action="Details" asp-route-id="@item.Id">
+                        @item.Name
+                    </a>
+                </h3>
+                <div class="card-excerpt">
+                    <p>@item.Description.Substring(0,50)...</p>
+                </div>
+                <div class="card-horizontal-meta">
+                    <div class="eskimo-author-meta">
+                        <p style="list-style:none">
+                            发表：<a class="author-meta" href="javascript:void()"><strong>徐易来</strong></a><br>
+                            开始时间：<span class="badge badge-default">@item.StartTime</span> |
+                            结束时间：<span class="badge badge-default">@item.EndTime</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-horizontal-left">
+                <a class="card-featured-img" asp-controller="Themes" asp-action="Details" asp-route-data="@item.Id">
+                    <img src="~/images/background.jpg">
+                </a>
+            </div>
+        </div>
+    </div>
+}

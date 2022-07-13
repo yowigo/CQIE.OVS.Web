@@ -1,0 +1,51 @@
+﻿@model CQIE.OVS.Models.ViewModel.LoginViewModel
+@{
+    ViewBag.Title = "网上投票系统";
+    Layout = "_LoginLayout";
+}
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('~/images/bg-01.jpg');">
+        <div class="wrap-login100">
+            <form action="Login" method="post" class="login100-form validate-form">
+                <span class="login100-form-logo">
+                    <i class="zmdi zmdi-landscape"></i>
+                </span>
+
+                <span class="login100-form-title p-b-34 p-t-27">
+                    欢迎登录网上投票系统
+                </span>
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="wrap-input100 validate-input" data-validate="Enter username">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="text" class="input100" value="3078816418@qq.com" placeholder="请输入登录用户名">
+                    <span asp-validation-for="Email" class="focus-input100" data-placeholder="&#xf207;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="input100" type="password" value="123456789" placeholder="请输入登录账户的密码">
+                    <span asp-validation-for="Password" class="focus-input100" data-placeholder="&#xf191;"></span>
+                </div>
+
+                <div class="contact100-form-checkbox">
+                    <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                    <label class="label-checkbox100" for="ckb1">记住我</label>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn">登录</button>
+                </div>
+
+                <div class="text-center p-t-180">
+                    <a class="txt1" asp-controller="Account" asp-action="Register">
+                        还没有账号？在此注册
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

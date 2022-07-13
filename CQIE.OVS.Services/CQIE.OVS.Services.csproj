@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IService\IUserRoleService.cs" />
+    <Compile Remove="IService\IUserService.cs" />
+    <Compile Remove="Service\UserRoleServiceImp.cs" />
+    <Compile Remove="Service\UserServiceImp.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CQIE.OVS.DataAccess\CQIE.OVS.DataAccess.csproj" />
+    <ProjectReference Include="..\CQIE.OVS.Models\CQIE.OVS.Models.csproj" />
+    <ProjectReference Include="..\CQIE.OVS.Reposity\CQIE.OVS.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

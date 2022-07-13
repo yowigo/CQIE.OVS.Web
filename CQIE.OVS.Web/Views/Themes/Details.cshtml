@@ -1,0 +1,222 @@
+﻿@using CQIE.OVS.Models
+@model Theme
+
+@inject CQIE.OVS.Services.IService.IThemeService _themeService
+
+@{
+    ViewData["Title"] = "比赛活动详情";
+}
+
+<div class="card">
+    <div class="card-header">
+    <h2>活动主题：</h2>
+    </div>
+    <div class="card-body">
+        <hr />
+        <dl class="row">
+            <dt class = "col-lg-2">@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class = "col-lg-10">@Html.DisplayFor(model => model.Name)</dd>
+            <dt class = "col-lg-2">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class = "col-lg-10">@Html.DisplayFor(model => model.Description)</dd>
+            <dt class = "col-lg-2">@Html.DisplayNameFor(model => model.StartTime)</dt>
+            <dd class = "col-lg-10">@Html.DisplayFor(model => model.StartTime)</dd>
+            <dt class = "col-lg-2">@Html.DisplayNameFor(model => model.EndTime)</dt>
+            <dd class = "col-lg-10">@Html.DisplayFor(model => model.EndTime)</dd>
+        </dl>
+    </div>
+</div>
+
+<br /><br />
+<div class="card">
+    @{
+        int id = ViewBag.themesId;
+        var value = await _themeService.GetThemeSinger(id);
+        foreach (var item in value.Theme_Singers)
+        {
+                            <div class="row justify-content-center m-3">
+                                <div class="card col-lg-6">
+                                    <div class="card-header">
+                                        <h2>歌手：@item.Singer.Name</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <h1>目前票数：@item.VoteNum</h1>
+                                        <img src="@item.Singer.PhotoPath" />
+                                    </div>
+                                    <div class="card-footer" style="text-align:center">
+                                    
+                                    <a asp-controller="Themes" asp-action="VoteAdd" asp-route-singerId="@item.Singer.Id"
+                        asp-route-themeId="@Model.Id" class="btn btn-black">投票</a>
+                                    </div>
+                                </div>
+                            </div>
+        }
+    }
+</div>
+
+<br /><br />
+   <div id="validLast" class="align-self-lg-center" style="color:#ff0000;font-size:40px;"></div>@*//到计时*@
+<div class="layui-container" style="margin:200px 400px 200px 400px">
+    <div class="row">
+        <div id="chart1" style="width:500px;height:400px;" class="col-md-6"></div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/echarts/echarts.min.js"></script>
+<script src="~/js/axios.min.js"></script>
+<script src="~/admin/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<script>
+    var x = new Array();
+    var y = new Array();
+
+    var myChart = echarts.init(document.getElementById("chart1"));
+     //为给定 ID 的 user 创建请求
+    option = {
+  xAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [120, 200, 150, 80, 70, 110, 130],
+      type: 'bar',
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+      }
+    }
+  ]
+};
+
+    myChart.setOption(option);
+     //初始化图表
+    getNumber();
+    function getNumber() {
+        var ax = new Array();
+        var yx = new Array();
+        axios.get('/Themes/Jsonlist', {
+        params: {
+            themeId: @ViewBag.themeId
+        }
+        })
+        .then(function (response) {
+            console.log(response.data[0].Number);
+            ax.push(response.data[0].SingerName);
+            yx.push(response.data[0].Number);
+            ax.push(response.data[1].SingerName);
+            yx.push(response.data[1].Number);
+            console.log("ax:", ax);
+            console.log("yx:", yx);
+            x = ax;
+            y = yx;
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: ax
+                },
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    interval:10,
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: yx,
+                        type: 'bar'
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    //时间倒计时
+    var lastHour = 0;       //小时
+    var lastMinute = 10;    //分钟
+    var lastSecond = 59;    //秒
+    //axios.get('/Themes/CountdownTime', {
+    //    params: {
+    //        themeId: @ViewBag.themeId
+    //    }
+    //    })
+    //    .then(function (response) {
+    //        console.log(response.data);
+    //        lastHour = response.data.hour;
+    //        lastMinute = response.data.minute;    //分钟
+    //        lastSecond = response.data.second;
+
+    //    })
+    //    .catch(function (error) {
+    //        console.log(error);
+    //    });
+
+
+    var lastInterval = setInterval(TimeDown, 1000);
+    /*
+        时间倒计时
+        TimeDown.js
+    */
+    function TimeDown() {
+        if (lastSecond > 0) {
+            lastSecond -= 1;
+        } else if (lastMinute > 0) {
+            lastMinute -= 1;
+            lastSecond = 60;
+        } else if (lastHour > 0) {
+            lastHour -= 1;
+            lastMinute = 60;
+            lastSecond = 60;
+        }
+        if (lastHour == 0 && lastMinute == 0 && lastSecond == 0)
+        {
+            clearInterval(lastInterval);
+            //console.log("已失效");
+            document.getElementById('validLast').innerText = "已失效";
+            //orderDel(true);
+            //调用修改比赛状态
+           // axios.get('/Themes/UpdtaState', {
+           // params: {
+           //     GameId: @ViewBag.GameId
+           // }
+           // })
+           // .then(function (response) {
+           //     console.log(response.data);
+           // })
+           // .catch(function (error) {
+           //   console.log(error);
+           //});
+
+        } 
+        else 
+        {
+            var tmp = '将于 ';
+            if (lastHour > 0) {
+                tmp += lastHour + ' 小时 ';
+            }
+            if (lastHour >= 0 || lastMinute > 0) {
+                tmp += (lastMinute > 9 ? '' : '0') + lastMinute + ' 分 ';
+            }
+            tmp += (lastSecond > 9 ? '' : '0') + lastSecond + ' 秒后失效';
+            document.getElementById('validLast').innerText = tmp;
+            console.log(tmp);
+            //每一秒调用一次生成图表
+            getNumber();
+        }
+     }
+ </Script>
+
+
+
+<div style="text-align:center">
+    <a asp-controller="Themes" asp-action="Index" class="btn btn-black">返回列表</a>
+</div>
+
+

@@ -1,0 +1,44 @@
+﻿@model CQIE.OVS.Models.ViewModel.RegisterViewModel
+@{
+    ViewBag.Title = "网上投票系统";
+    Layout = "_LoginLayout";
+}
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('~/images/bg-01.jpg');">
+        <div class="wrap-login100">
+            <form action="Register" method="post" class="login100-form validate-form">
+                <span class="login100-form-logo">
+                    <i class="zmdi zmdi-landscape"></i>
+                </span>
+                
+                <span class="login100-form-title p-b-34 p-t-27">
+                    欢迎登录网上投票系统
+                </span>
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="wrap-input100 validate-input" data-validate="Enter Email">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="input100" type="text" placeholder="请输入用户名">
+                    <span asp-validation-for="Email" class="focus-input100" data-placeholder="&#xf207;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="input100" type="password" placeholder="请输入账户密码">
+                    <span asp-validation-for="Password" class="focus-input100" data-placeholder="&#xf191;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="input100" type="password" placeholder="请确认账户密码">
+                    <span asp-validation-for="ConfirmPassword" class="focus-input100" data-placeholder="&#xf191;"></span>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn">注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
